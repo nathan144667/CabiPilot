@@ -1,5 +1,8 @@
 import Link from "next/link";
 import { createAdminClient } from "@/lib/supabase/server";
+
+// Force dynamic rendering — la page dépend de Supabase (env vars au runtime)
+export const dynamic = "force-dynamic";
 import {
   Card,
   CardHeader,

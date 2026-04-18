@@ -1,5 +1,8 @@
 import { notFound } from "next/navigation";
 import { createAdminClient } from "@/lib/supabase/server";
+
+// Force dynamic rendering — la page dépend de Supabase (env vars au runtime)
+export const dynamic = "force-dynamic";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
