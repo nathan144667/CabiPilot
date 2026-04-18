@@ -7,7 +7,9 @@ import {
   FolderOpen,
   Send,
   Settings,
+  LogOut,
 } from "lucide-react";
+import { createClient } from "@/lib/supabase/server";
 
 const navItems = [
   { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
@@ -16,7 +18,30 @@ const navItems = [
   { href: "/parametres", label: "Paramètres", icon: Settings },
 ];
 
-export default function AppLayout({ children }: { children: React.ReactNode }) {
+function initialsFromEmail(email: string | null | undefined): string {
+  if (!email) return "??";
+  const local = email.split("@")[0] || "";
+  const parts = local.split(/[._-]/).filter(Boolean);
+  if (parts.length >= 2) {
+    return (parts[0][0] + parts[1][0]).toUpperCase();
+  }
+  return local.slice(0, 2).toUpperCase();
+}
+
+export default async function AppLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  const email = user?.email ?? null;
+  const displayName = email ? email.split("@")[0] : "Invité";
+  const initials = initialsFromEmail(email);
+
   return (
     <div className="flex h-screen overflow-hidden bg-background">
       {/* Sidebar */}
@@ -52,19 +77,31 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
         {/* User */}
         <div className="flex items-center gap-2.5 p-4">
           <Avatar size="sm">
-            <AvatarFallback>NC</AvatarFallback>
+            <AvatarFallback>{initials}</AvatarFallback>
           </Avatar>
-          <div className="flex flex-col text-xs">
-            <span className="font-medium">Nath C.</span>
-            <span className="text-muted-foreground">Admin</span>
+          <div className="flex min-w-0 flex-1 flex-col text-xs">
+            <span className="truncate font-medium" title={email ?? undefined}>
+              {displayName}
+            </span>
+            <span className="truncate text-muted-foreground" title={email ?? undefined}>
+              {email ?? "non connecté"}
+            </span>
           </div>
+          <form action="/auth/signout" method="post">
+            <button
+              type="submit"
+              title="Se déconnecter"
+              className="flex size-7 items-center justify-center rounded-md text-sidebar-foreground/60 transition-colors hover:bg-sidebar-accent hover:text-sidebar-foreground"
+            >
+              <LogOut className="size-4" />
+              <span className="sr-only">Se déconnecter</span>
+            </button>
+          </form>
         </div>
       </aside>
 
       {/* Main content */}
-      <main className="flex-1 overflow-y-auto">
-        {children}
-      </main>
+      <main className="flex-1 overflow-y-auto">{children}</main>
 
       <Toaster position="bottom-right" />
     </div>
