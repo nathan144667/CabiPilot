@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { createAdminClient } from "@/lib/supabase/server";
+import { createClient, createAdminClient } from "@/lib/supabase/server";
 
 // Force dynamic rendering — la page dépend de Supabase (env vars au runtime)
 export const dynamic = "force-dynamic";
@@ -19,11 +19,26 @@ import {
   Clock,
   TrendingUp,
   ArrowRight,
+  Plus,
 } from "lucide-react";
 
-const CABINET_ID = "11111111-1111-1111-1111-111111111111";
+const DEMO_CABINET_ID = "11111111-1111-1111-1111-111111111111";
 
-async function getKPIs() {
+async function getCabinetId(): Promise<string> {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) return DEMO_CABINET_ID;
+  const { data: profile } = await supabase
+    .from("users_profile")
+    .select("cabinet_id")
+    .eq("id", user.id)
+    .single();
+  return (profile?.cabinet_id as string | undefined) || DEMO_CABINET_ID;
+}
+
+async function getKPIs(CABINET_ID: string) {
   const supabase = createAdminClient();
 
   // Fetch dossier IDs once
@@ -75,7 +90,7 @@ async function getKPIs() {
   return { totalDossiers, draftRelances, heures, tauxRecouvrement };
 }
 
-async function getDossiers() {
+async function getDossiers(CABINET_ID: string) {
   const supabase = createAdminClient();
   const { data, error } = await supabase
     .from("dossiers")
@@ -94,7 +109,11 @@ function isEnRetard(lastRelanceAt: string | null): boolean {
 }
 
 export default async function DashboardPage() {
-  const [kpis, dossiers] = await Promise.all([getKPIs(), getDossiers()]);
+  const cabinetId = await getCabinetId();
+  const [kpis, dossiers] = await Promise.all([
+    getKPIs(cabinetId),
+    getDossiers(cabinetId),
+  ]);
 
   const kpiCards = [
     {
@@ -126,13 +145,21 @@ export default async function DashboardPage() {
   return (
     <div className="p-6 lg:p-8 space-y-8">
       {/* Header */}
-      <div>
-        <h1 className="font-heading text-2xl font-semibold tracking-tight">
-          Dashboard
-        </h1>
-        <p className="text-sm text-muted-foreground mt-1">
-          Vue d&apos;ensemble de votre cabinet
-        </p>
+      <div className="flex items-start justify-between gap-4">
+        <div>
+          <h1 className="font-heading text-2xl font-semibold tracking-tight">
+            Dashboard
+          </h1>
+          <p className="text-sm text-muted-foreground mt-1">
+            Vue d&apos;ensemble de votre cabinet
+          </p>
+        </div>
+        <Button asChild>
+          <Link href="/dossier/new">
+            <Plus className="size-4" />
+            Nouveau dossier
+          </Link>
+        </Button>
       </div>
 
       {/* KPIs */}
@@ -156,7 +183,13 @@ export default async function DashboardPage() {
         {dossiers.length === 0 ? (
           <Card>
             <CardContent className="py-12 text-center text-muted-foreground">
-              Aucun dossier pour le moment.
+              <p className="mb-4">Aucun dossier pour le moment.</p>
+              <Button asChild>
+                <Link href="/dossier/new">
+                  <Plus className="size-4" />
+                  Créer votre premier dossier
+                </Link>
+              </Button>
             </CardContent>
           </Card>
         ) : (
