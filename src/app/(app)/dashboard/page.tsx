@@ -9,18 +9,17 @@ import {
   CardTitle,
   CardDescription,
   CardContent,
-  CardFooter,
 } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
   FolderOpen,
   FileEdit,
   Clock,
   TrendingUp,
-  ArrowRight,
   Plus,
 } from "lucide-react";
+import { DossierCard } from "./dossier-card";
+import { computeDossierStatuses, sortByUrgency } from "@/lib/dossier/status";
 
 const DEMO_CABINET_ID = "11111111-1111-1111-1111-111111111111";
 
@@ -94,7 +93,7 @@ async function getDossiers(CABINET_ID: string) {
   const supabase = createAdminClient();
   const { data, error } = await supabase
     .from("dossiers")
-    .select("id, client_name, regime_fiscal, secteur, last_relance_at, created_at")
+    .select("id, client_name, regime_fiscal, secteur, created_at")
     .eq("cabinet_id", CABINET_ID)
     .order("updated_at", { ascending: false });
 
@@ -102,18 +101,24 @@ async function getDossiers(CABINET_ID: string) {
   return data ?? [];
 }
 
-function isEnRetard(lastRelanceAt: string | null): boolean {
-  if (!lastRelanceAt) return true;
-  const diff = Date.now() - new Date(lastRelanceAt).getTime();
-  return diff > 30 * 24 * 60 * 60 * 1000; // > 30 jours
-}
-
 export default async function DashboardPage() {
   const cabinetId = await getCabinetId();
-  const [kpis, dossiers] = await Promise.all([
+  const [kpis, dossiersRaw] = await Promise.all([
     getKPIs(cabinetId),
     getDossiers(cabinetId),
   ]);
+
+  // Enrichissement métier : statut + raisons + tri par urgence
+  const dossiersWithStatus = await computeDossierStatuses(dossiersRaw);
+  const dossiers = sortByUrgency(dossiersWithStatus);
+
+  const counts = dossiers.reduce(
+    (acc, d) => {
+      acc[d.statusInfo.status]++;
+      return acc;
+    },
+    { red: 0, orange: 0, green: 0 }
+  );
 
   const kpiCards = [
     {
@@ -123,10 +128,10 @@ export default async function DashboardPage() {
       color: "text-blue-500",
     },
     {
-      label: "Relances draft",
-      value: kpis.draftRelances,
+      label: "En retard",
+      value: counts.red,
       icon: FileEdit,
-      color: "text-amber-500",
+      color: "text-red-500",
     },
     {
       label: "Heures économisées",
@@ -179,7 +184,27 @@ export default async function DashboardPage() {
 
       {/* Dossiers grid */}
       <div>
-        <h2 className="font-heading text-lg font-medium mb-4">Dossiers clients</h2>
+        <div className="mb-4 flex items-center justify-between gap-3">
+          <h2 className="font-heading text-lg font-medium">
+            Dossiers clients
+          </h2>
+          {dossiers.length > 0 ? (
+            <div className="flex items-center gap-3 text-xs text-muted-foreground">
+              <span className="flex items-center gap-1.5">
+                <span className="inline-block size-2 rounded-full bg-red-500" />
+                {counts.red} en retard
+              </span>
+              <span className="flex items-center gap-1.5">
+                <span className="inline-block size-2 rounded-full bg-amber-500" />
+                {counts.orange} attention
+              </span>
+              <span className="flex items-center gap-1.5">
+                <span className="inline-block size-2 rounded-full bg-emerald-500" />
+                {counts.green} à jour
+              </span>
+            </div>
+          ) : null}
+        </div>
         {dossiers.length === 0 ? (
           <Card>
             <CardContent className="py-12 text-center text-muted-foreground">
@@ -194,44 +219,21 @@ export default async function DashboardPage() {
           </Card>
         ) : (
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {dossiers.map((dossier) => {
-              const enRetard = isEnRetard(dossier.last_relance_at);
-              return (
-                <Card key={dossier.id}>
-                  <CardHeader>
-                    <CardTitle>{dossier.client_name}</CardTitle>
-                    <CardDescription className="flex items-center gap-2 flex-wrap">
-                      {dossier.regime_fiscal && (
-                        <Badge variant="outline">{dossier.regime_fiscal}</Badge>
-                      )}
-                      {dossier.secteur && (
-                        <Badge variant="secondary">{dossier.secteur}</Badge>
-                      )}
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <Badge
-                      variant={enRetard ? "destructive" : "default"}
-                      className={
-                        enRetard
-                          ? ""
-                          : "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400"
-                      }
-                    >
-                      {enRetard ? "En retard" : "À jour"}
-                    </Badge>
-                  </CardContent>
-                  <CardFooter>
-                    <Button asChild variant="ghost" size="sm" className="ml-auto">
-                      <Link href={`/dossier/${dossier.id}`}>
-                        Ouvrir
-                        <ArrowRight className="size-3.5" />
-                      </Link>
-                    </Button>
-                  </CardFooter>
-                </Card>
-              );
-            })}
+            {dossiers.map((dossier) => (
+              <DossierCard
+                key={dossier.id}
+                dossier={{
+                  id: dossier.id,
+                  client_name: dossier.client_name,
+                  regime_fiscal: dossier.regime_fiscal,
+                  secteur: dossier.secteur,
+                }}
+                statusInfo={{
+                  status: dossier.statusInfo.status,
+                  reasons: dossier.statusInfo.reasons,
+                }}
+              />
+            ))}
           </div>
         )}
       </div>

@@ -50,7 +50,19 @@ function formatDate(dateStr: string) {
   });
 }
 
-function RelanceDialog({ dossierId, onGenerated }: { dossierId: string; onGenerated: (r: Relance) => void }) {
+export function RelanceDialog({
+  dossierId,
+  onGenerated,
+  triggerLabel = "Générer une relance",
+  triggerVariant = "default",
+  triggerSize = "sm",
+}: {
+  dossierId: string;
+  onGenerated?: (r: Relance) => void;
+  triggerLabel?: string;
+  triggerVariant?: "default" | "outline" | "secondary" | "ghost";
+  triggerSize?: "sm" | "default" | "lg";
+}) {
   const [open, setOpen] = useState(false);
   const [channel, setChannel] = useState<"email" | "whatsapp">("email");
   const [loading, setLoading] = useState(false);
@@ -75,7 +87,7 @@ function RelanceDialog({ dossierId, onGenerated }: { dossierId: string; onGenera
       const data: RelanceResult = await res.json();
       setResult(data);
 
-      onGenerated({
+      onGenerated?.({
         id: data.id ?? crypto.randomUUID(),
         email_subject: data.subject ?? null,
         status: "draft",
@@ -106,9 +118,9 @@ function RelanceDialog({ dossierId, onGenerated }: { dossierId: string; onGenera
   return (
     <Dialog open={open} onOpenChange={(v) => (v ? setOpen(true) : handleClose())}>
       <DialogTrigger asChild>
-        <Button size="sm">
+        <Button size={triggerSize} variant={triggerVariant}>
           <Plus className="size-3.5" />
-          Générer une relance
+          {triggerLabel}
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-lg">
