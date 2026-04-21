@@ -26,14 +26,14 @@ const instrumentSerif = Instrument_Serif({
 });
 
 export const metadata: Metadata = {
-  title: "CabiPilot — Le copilote IA des cabinets Pennylane & Tiime",
+  title: "CabiPilot — Le copilote IA dédié aux cabinets sur Pennylane",
   description:
-    "CabiPilot est le copilote IA qui fait gagner 10h par semaine à chaque collaborateur d'un cabinet d'expertise comptable sur Pennylane. Relances clients, Q&A dossier, zéro migration.",
+    "CabiPilot est le copilote IA spécialement conçu pour les cabinets d'expertise comptable qui utilisent Pennylane. Relances clients automatisées, Q&A dossier avec citations, 10h/semaine récupérées par collab, zéro migration.",
   metadataBase: new URL("https://cabipilot.fr"),
   openGraph: {
-    title: "CabiPilot — Copilote IA pour cabinets Pennylane & Tiime",
+    title: "CabiPilot — Le copilote IA pour cabinets sur Pennylane",
     description:
-      "Récupérez 10h par semaine par collaborateur. Relances IA, Q&A sur dossier, sans migration.",
+      "Récupérez 10h par semaine par collaborateur. Relances IA, Q&A sur dossier, dédié Pennylane, sans migration.",
     url: "https://cabipilot.fr",
     siteName: "CabiPilot",
     locale: "fr_FR",

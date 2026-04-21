@@ -61,19 +61,14 @@ export default function ParametresPage() {
               </div>
               <Badge variant="default">Connecté</Badge>
             </div>
-            <div className="flex items-center justify-between p-3 border rounded-lg">
+            <div className="flex items-center justify-between p-3 border rounded-lg opacity-60">
               <div>
-                <div className="font-medium">Tiime Expert</div>
-                <div className="text-xs text-muted-foreground">API lecture seule — à configurer</div>
+                <div className="font-medium">Tiime, Cegid, Sage, ACD</div>
+                <div className="text-xs text-muted-foreground">
+                  Focus Pennylane en phase 1. Autres plateformes sur demande waitlist.
+                </div>
               </div>
-              <Badge variant="outline">Bientôt</Badge>
-            </div>
-            <div className="flex items-center justify-between p-3 border rounded-lg">
-              <div>
-                <div className="font-medium">Cegid Connect</div>
-                <div className="text-xs text-muted-foreground">Partenariat en cours</div>
-              </div>
-              <Badge variant="outline">Roadmap Q3</Badge>
+              <Badge variant="outline">Roadmap</Badge>
             </div>
           </CardContent>
         </Card>

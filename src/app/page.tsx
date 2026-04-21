@@ -38,10 +38,10 @@ export default function Home() {
             <span className="highlight">10 heures par semaine.</span>
           </h1>
           <p className="lead">
-            CabiPilot est le copilote IA conçu pour les cabinets d&apos;expertise comptable sur{" "}
-            <strong>Pennylane</strong> et <strong>Tiime</strong>. Il rédige vos relances clients,
+            CabiPilot est le copilote IA dédié aux cabinets d&apos;expertise comptable qui
+            utilisent <strong>Pennylane</strong>. Il rédige vos relances clients,
             résume vos dossiers et répond aux questions répétitives —{" "}
-            <strong>sans migration, vos données restent dans votre logiciel</strong>.
+            <strong>sans migration, vos données restent dans Pennylane</strong>.
           </p>
           <div className="cta-row">
             <a href="#waitlist" className="btn btn-primary">
@@ -59,7 +59,7 @@ export default function Home() {
               <span className="trust-check">✓</span> Hébergement France — RGPD
             </div>
             <div className="trust-item">
-              <span className="trust-check">✓</span> Intégration API Pennylane &amp; Tiime
+              <span className="trust-check">✓</span> Intégration API Pennylane officielle
             </div>
             <div className="trust-item">
               <span className="trust-check">✓</span> 20 min d&apos;onboarding par collab
@@ -141,7 +141,7 @@ export default function Home() {
           <h2>Trois briques. Un objectif. Libérer vos collabs.</h2>
           <p className="intro">
             CabiPilot ne remplace pas votre logiciel. Il se connecte à{" "}
-            <strong>Pennylane ou Tiime en lecture seule</strong> — vos données ne bougent pas,
+            <strong>Pennylane en lecture seule</strong> — vos données ne bougent pas,
             jamais. On lit à la volée, on ne stocke rien.
           </p>
 
@@ -307,9 +307,9 @@ export default function Home() {
               <div className="step-num">01</div>
               <h4>Connexion en 10 minutes</h4>
               <p>
-                Vous nous donnez une clé API Pennylane ou Tiime. On se connecte en{" "}
-                <strong>lecture seule</strong>. Vos collabs continuent d&apos;utiliser leur logiciel
-                habituel, rien ne change côté production.
+                Vous connectez CabiPilot à votre compte Pennylane via OAuth 2.0. On se connecte en{" "}
+                <strong>lecture seule</strong>. Vos collabs continuent d&apos;utiliser Pennylane
+                habituellement, rien ne change côté production.
               </p>
             </div>
             <div className="step-card">
@@ -349,7 +349,7 @@ export default function Home() {
               </div>
               <ul>
                 <li>
-                  Intégration Pennylane <strong>ou</strong> Tiime
+                  Intégration <strong>Pennylane</strong> via OAuth officielle
                 </li>
                 <li>Relances IA illimitées</li>
                 <li>Q&amp;A dossier : 50 questions / mois</li>
@@ -373,7 +373,7 @@ export default function Home() {
               </div>
               <ul>
                 <li>
-                  Intégration Pennylane <strong>et</strong> Tiime simultanées
+                  Intégration <strong>Pennylane</strong> complète (multi-dossiers)
                 </li>
                 <li>
                   Relances + <strong>envoi WhatsApp Business</strong> automatisé
@@ -398,10 +398,10 @@ export default function Home() {
                 699 €<small> / mois HT</small>
               </div>
               <ul>
-                <li>Intégrations Pennylane + Tiime (multi-comptes)</li>
+                <li>Intégration <strong>Pennylane</strong> multi-comptes / multi-bureaux</li>
                 <li>SSO Google / Microsoft</li>
                 <li>API pour vos workflows internes</li>
-                <li>Multi-bureaux / multi-entités</li>
+                <li>Multi-entités illimitées</li>
                 <li>Customer success manager dédié</li>
                 <li>SLA 99,9 % + hébergement dédié OVH</li>
               </ul>
@@ -458,30 +458,32 @@ export default function Home() {
             <details className="faq">
               <summary>Faut-il migrer nos dossiers vers CabiPilot ?</summary>
               <div className="faq-body">
-                <strong>Non, jamais.</strong> CabiPilot se connecte à votre Pennylane ou Tiime via
-                leur API officielle en <strong>lecture seule</strong>. Nous lisons les dossiers à la
-                volée pour répondre à une question ou rédiger une relance, puis nous ne stockons
-                rien. Vos données restent exclusivement chez Pennylane/Tiime. Zéro duplication,
+                <strong>Non, jamais.</strong> CabiPilot se connecte à votre Pennylane via
+                l&apos;API officielle en <strong>lecture seule</strong>. Nous lisons les dossiers à
+                la volée pour répondre à une question ou rédiger une relance, puis nous ne stockons
+                rien. Vos données restent exclusivement chez Pennylane. Zéro duplication,
                 zéro migration.
               </div>
             </details>
             <details className="faq">
               <summary>Faut-il changer de logiciel de production ?</summary>
               <div className="faq-body">
-                Non. CabiPilot se greffe sur votre Pennylane ou Tiime via API. Vos collabs
-                continuent d&apos;utiliser leur logiciel habituel exactement comme avant. CabiPilot
-                est une interface séparée qui apporte l&apos;IA par-dessus — à utiliser uniquement
-                quand c&apos;est pertinent.
+                Non. CabiPilot se greffe sur votre Pennylane via API. Vos collabs continuent
+                d&apos;utiliser Pennylane exactement comme avant. CabiPilot est une interface
+                séparée qui apporte l&apos;IA par-dessus — à utiliser uniquement quand c&apos;est
+                pertinent. Pennylane reste votre source de vérité unique.
               </div>
             </details>
             <details className="faq">
-              <summary>Et si je suis sur Cegid, Sage, ACD ou autre ?</summary>
+              <summary>Pourquoi uniquement Pennylane ? Et si je suis sur Tiime, Cegid, Sage, ACD ?</summary>
               <div className="faq-body">
-                Aujourd&apos;hui, CabiPilot intègre uniquement Pennylane et Tiime (APIs les plus
-                mûres). Si vous êtes sur Cegid ou Sage, rejoignez la waitlist &laquo;&nbsp;Priority&nbsp;&raquo; — nous
-                ajoutons ces intégrations dès que nous avons 50 cabinets demandeurs. D&apos;ici là,
-                un mode &laquo;&nbsp;upload FEC ponctuel&nbsp;&raquo; est possible pour tester le produit sur
-                quelques dossiers.
+                Nous avons fait le choix volontaire de nous concentrer sur{" "}
+                <strong>Pennylane uniquement</strong> en phase 1, pour construire la meilleure
+                intégration possible plutôt que 10 intégrations moyennes. Si vous êtes sur un autre
+                logiciel, rejoignez la waitlist &laquo;&nbsp;Priority&nbsp;&raquo; — nous ouvrons de
+                nouvelles plateformes dès que notre communauté Pennylane est stable. D&apos;ici là,
+                un mode &laquo;&nbsp;upload FEC ponctuel&nbsp;&raquo; est disponible pour tester le
+                produit sur quelques dossiers.
               </div>
             </details>
             <details className="faq">
