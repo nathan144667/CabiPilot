@@ -31,7 +31,7 @@ export default function Home() {
       <section className="hero">
         <div className="container hero-inner">
           <span className="pill">
-            <span className="pill-dot"></span> 3 places de design partners disponibles — 50% à vie
+            <span className="pill-dot"></span> 10 places de design partners disponibles — 80% à vie
           </span>
           <h1 className="headline">
             Vos collaborateurs récupèrent{" "}
@@ -417,11 +417,11 @@ export default function Home() {
           <div style={{ marginTop: 60 }}>
             <div className="dp-callout">
               <div className="dp-icon">🎯</div>
-              <h3>Programme Design Partners — 3 places disponibles</h3>
+              <h3>Programme Design Partners — 10 places disponibles</h3>
               <p>
-                Nous cherchons 3 cabinets partenaires pour co-construire CabiPilot.{" "}
-                <strong>-50 % à vie</strong> sur votre abonnement en échange de 15 min de feedback
-                hebdo pendant 2 mois. Vous aidez à façonner l&apos;outil, vous payez moitié prix
+                Nous cherchons 10 cabinets partenaires pour co-construire CabiPilot.{" "}
+                <strong>-80 % à vie</strong> sur votre abonnement en échange de 15 min de feedback
+                hebdo pendant 2 mois. Vous aidez à façonner l&apos;outil, vous payez 20 % du prix
                 pour toujours.
               </p>
               <a href="#waitlist" className="btn btn-primary">
@@ -515,8 +515,8 @@ export default function Home() {
             <details className="faq">
               <summary>Pourquoi le programme Design Partners ?</summary>
               <div className="faq-body">
-                Nous voulons construire CabiPilot avec des cabinets réels, pas en chambre. 3
-                cabinets payent 50 % du prix à vie en échange de 15 min de feedback hebdo pendant 2
+                Nous voulons construire CabiPilot avec des cabinets réels, pas en chambre. 10
+                cabinets payent 20 % du prix à vie en échange de 15 min de feedback hebdo pendant 2
                 mois. Ils influencent directement la roadmap. C&apos;est notre moyen de livrer un
                 produit qui colle vraiment au terrain.
               </div>
